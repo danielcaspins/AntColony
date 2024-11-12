@@ -24,11 +24,29 @@ def main():
     cities = create_cities()
 
 
-
+    ALL_POOSSIBLE_ROUTES = []
     route = []
+
+    id = 0
 
     for i in range(NUM_OF_CITIES - 1):
         route.append({"pheramone": 0.5, "desire": 0, "proximity": 0, "distance" : 0 , "color" : colors[i + 1], "visited": False}) 
+
+    for i in range(NUM_OF_CITIES - 1):
+        routes_from_point_i = []
+        for j in range(0, NUM_OF_CITIES - i - 1):
+            routes_from_point_i.append([0.2, 0, False])  
+            id += 1  
+        ALL_POOSSIBLE_ROUTES.append(routes_from_point_i)
+
+
+
+    starting_point = 9
+
+    lines = all_aviable_lines(starting_point=starting_point, all_possible_routes=ALL_POOSSIBLE_ROUTES)
+
+    
+
 
     ant(cities, route)
 
@@ -135,6 +153,7 @@ def ant(locations, route):
         print(route[chosen_point]["color"])
         chosen_point += 1
         locations[chosen_point][2] = True
+    return ant_route
 
 
         
@@ -151,7 +170,25 @@ def get_a_prob(probabilities):
 
 
 
+def all_aviable_lines(starting_point, all_possible_routes):
+    i = 0
+    lines = []
 
+    j = starting_point - 1
+    while(i < starting_point):
+        lines.append(all_possible_routes[i][j])
+        i += 1
+        j -= 1
+
+    
+    j = 0
+    while(j < NUM_OF_CITIES - 1 - i):
+        lines.append(all_possible_routes[i][j])
+        j += 1
+
+    return lines
+        
+        
 
 
 
